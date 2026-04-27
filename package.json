@@ -10,7 +10,8 @@
     "upload:videos": "node scripts/upload-videos.mjs"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.45.4"
+    "@supabase/supabase-js": "^2.45.4",
+    "pg": "^8.13.1"
   },
   "devDependencies": {
     "dotenv": "^16.4.5",

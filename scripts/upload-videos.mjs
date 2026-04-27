@@ -4,7 +4,7 @@ import { mkdir, readdir, writeFile } from "node:fs/promises";
 import { createReadStream } from "node:fs";
 import path from "node:path";
 
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+const SUPABASE_URL = process.env.SUPABASE_URL;
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const BUCKET = process.env.SUPABASE_VIDEO_BUCKET || "portfolio-videos";
 const SOURCE_DIR = process.env.VIDEO_SOURCE_DIR || "C:/users/ayazk/aki/content";
@@ -13,7 +13,7 @@ const MANIFEST_PATH = path.join(PUBLIC_DIR, "video-manifest.json");
 const VIDEO_EXTENSIONS = new Set([".mp4", ".webm"]);
 
 if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
-  throw new Error("Set VITE_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY before uploading videos.");
+  throw new Error("Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY before uploading videos.");
 }
 
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {

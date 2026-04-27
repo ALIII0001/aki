@@ -1,24 +1,16 @@
-import { createClient } from "@supabase/supabase-js";
+import { getSupabaseClient } from "./supabaseClient.js";
 import "./styles.css";
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const VIDEO_BUCKET = "portfolio-videos";
 
 const grid = document.querySelector("#video-grid");
 const heroVideo = document.querySelector("#hero-video");
 
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  renderError(
-    "Missing Supabase environment variables. Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY."
-  );
-} else {
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  bootPortfolio(supabase);
-}
+bootPortfolio();
 
-async function bootPortfolio(supabase) {
+async function bootPortfolio() {
   try {
+    const supabase = await getSupabaseClient();
     const response = await fetch("/video-manifest.json", { cache: "no-store" });
 
     if (!response.ok) {
