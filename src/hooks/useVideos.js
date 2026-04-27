@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { fallbackVideos } from "../lib/fallbackVideos.js";
 import { isSupabaseConfigured, supabase } from "../lib/supabaseClient.js";
 
 export function useVideos() {
@@ -11,23 +12,24 @@ export function useVideos() {
 
     async function fetchVideos() {
       if (!isSupabaseConfigured) {
-        setError("Videos unavailable.");
+        setVideos(fallbackVideos);
+        setError("");
         setLoading(false);
         return;
       }
 
       const { data, error: queryError } = await supabase
         .from("videos")
-        .select("id,title,category,youtube_url,thumbnail,created_at")
+        .select("id,title,youtube_url,thumbnail,created_at")
         .order("created_at", { ascending: false });
 
       if (ignore) return;
 
       if (queryError) {
-        setError("Videos unavailable.");
-        setVideos([]);
+        setError("");
+        setVideos(fallbackVideos);
       } else {
-        setVideos(data ?? []);
+        setVideos(data?.length ? data : fallbackVideos);
         setError("");
       }
 

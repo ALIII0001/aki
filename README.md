@@ -21,8 +21,8 @@ portfolio-vercel-supabase/
       PortfolioHighlight.jsx
       Services.jsx
       VideoCard.jsx
-      VideoRow.jsx
-      VisualBreak.jsx
+      VideoSection.jsx
+      VisualSection.jsx
     hooks/
       useVideos.js
     lib/
@@ -48,7 +48,6 @@ Create a table named `videos`:
 create table public.videos (
   id uuid primary key default gen_random_uuid(),
   title text not null,
-  category text not null,
   youtube_url text not null,
   thumbnail text,
   created_at timestamptz not null default now()
@@ -71,9 +70,25 @@ Add rows like:
 
 ```txt
 title: Brand Film 01
-category: ads
 youtube_url: https://www.youtube.com/watch?v=YOUR_VIDEO_ID
 thumbnail: https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg
+```
+
+Seed the provided YouTube videos:
+
+```sql
+insert into public.videos (title, youtube_url, thumbnail)
+values
+  (
+    'Cut One',
+    'https://youtu.be/b29Kepe4tms',
+    'https://img.youtube.com/vi/b29Kepe4tms/maxresdefault.jpg'
+  ),
+  (
+    'Cut Two',
+    'https://youtu.be/XqCPoUJ8754',
+    'https://img.youtube.com/vi/XqCPoUJ8754/maxresdefault.jpg'
+  );
 ```
 
 `thumbnail` is optional. If empty, the site derives a YouTube thumbnail from `youtube_url`.
@@ -106,7 +121,7 @@ The anon key is public-safe when Row Level Security policies are correct. Never 
 2. Use public, unlisted, or embeddable videos.
 3. Copy the YouTube URL.
 4. Add a row in Supabase `videos`.
-5. Use categories like `films`, `ads`, `reels`, `music`, or `documentary`.
+5. The site fetches the rows automatically.
 
 The frontend uses thumbnails first, then lazy-loads YouTube no-cookie embeds on hover or when a card enters the viewport.
 
@@ -147,7 +162,7 @@ src/components/Contact.jsx
 WhatsApp is already wired to:
 
 ```txt
-https://wa.me/918462091288?text=Hi%2C%20I%20want%20to%20start%20a%20project
+https://wa.me/918462091288?text=Hi%20I%20want%20to%20start%20a%20project
 ```
 
 Update copy, categories, and service cards in the component files under:

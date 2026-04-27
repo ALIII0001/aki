@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Instagram, MessageCircle } from "lucide-react";
 
-const whatsappUrl = "https://wa.me/918462091288?text=Hi%2C%20I%20want%20to%20start%20a%20project";
+const whatsappUrl = "https://wa.me/918462091288?text=Hi%20I%20want%20to%20start%20a%20project";
 const instagramUrl = "https://www.instagram.com/";
 
 export default function Contact() {

@@ -10,7 +10,7 @@ export default function VideoCard({ video }) {
   const [failed, setFailed] = useState(false);
   const thumbnail = getThumbnail(video);
   const shouldLoad = active || inView;
-  const embedUrl = shouldLoad ? getEmbedUrl(video.youtube_url, { autoplay: true, controls: true }) : "";
+  const embedUrl = shouldLoad ? getEmbedUrl(video.youtube_url, { autoplay: true, controls: false }) : "";
 
   return (
     <motion.article
@@ -21,7 +21,7 @@ export default function VideoCard({ video }) {
       onMouseLeave={() => setActive(false)}
       onFocus={() => setActive(true)}
       onBlur={() => setActive(false)}
-      className="group relative min-w-[82vw] snap-start sm:min-w-[460px] lg:min-w-[520px]"
+      className="group relative w-full"
       tabIndex={0}
     >
       <div className="relative aspect-video overflow-hidden rounded-lg border border-white/10 bg-zinc-950 shadow-2xl shadow-black/40">
@@ -61,9 +61,9 @@ export default function VideoCard({ video }) {
           </div>
         )}
 
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-5">
-          <p className="text-xs uppercase tracking-[0.24em] text-gold">{video.category}</p>
-          <h4 className="mt-2 max-w-[90%] font-serif text-2xl leading-none">{video.title}</h4>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-5 sm:p-7">
+          <p className="text-xs uppercase tracking-[0.24em] text-gold">Now playing</p>
+          <h4 className="mt-2 max-w-[90%] font-serif text-2xl leading-none sm:text-4xl">{video.title}</h4>
         </div>
       </div>
     </motion.article>
