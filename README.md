@@ -1,6 +1,6 @@
-# Cinematic Portfolio: Vercel + Supabase
+# AKI Films Cinematic Portfolio
 
-Production-ready Vite portfolio with Vercel deployment, Supabase Storage video delivery, and optional server-only database access.
+A premium React portfolio for filmmaker-style work: Vite, Framer Motion, Tailwind CSS, Supabase video metadata, and YouTube-hosted playback.
 
 ## Folder Structure
 
@@ -8,164 +8,128 @@ Production-ready Vite portfolio with Vercel deployment, Supabase Storage video d
 portfolio-vercel-supabase/
   public/
     assets/
-    video-manifest.json
-  api/
-    config.mjs
-    data.mjs
-  scripts/
-    upload-videos.mjs
   src/
-    main.js
-    supabaseClient.js
+    components/
+      About.jsx
+      Contact.jsx
+      Hero.jsx
+      Services.jsx
+      VideoCard.jsx
+      VideoRow.jsx
+    hooks/
+      useVideos.js
+    lib/
+      supabaseClient.js
+      youtube.js
+    App.jsx
+    main.jsx
     styles.css
   .env.example
   index.html
   package.json
+  postcss.config.js
+  tailwind.config.js
   vercel.json
+  vite.config.js
 ```
+
+## Supabase Table
+
+Create a table named `videos`:
+
+```sql
+create table public.videos (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  category text not null,
+  youtube_url text not null,
+  thumbnail text,
+  created_at timestamptz not null default now()
+);
+```
+
+Enable read access for published portfolio videos:
+
+```sql
+alter table public.videos enable row level security;
+
+create policy "Public can read videos"
+on public.videos
+for select
+to anon
+using (true);
+```
+
+Add rows like:
+
+```txt
+title: Brand Film 01
+category: ads
+youtube_url: https://www.youtube.com/watch?v=YOUR_VIDEO_ID
+thumbnail: https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg
+```
+
+`thumbnail` is optional. If empty, the site derives a YouTube thumbnail from `youtube_url`.
 
 ## Environment Variables
 
-Use these names in Vercel:
+Local `.env` and Vercel variables:
 
 ```txt
-SUPABASE_URL=https://your-project-ref.supabase.co
-SUPABASE_ANON_KEY=your-public-anon-key
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-public-key
 ```
 
-Optional server-only database variable for the example API route:
+The anon key is public-safe when Row Level Security policies are correct. Never put a service role key or PostgreSQL connection string in this React app.
 
-```txt
-SUPABASE_DB_URL=postgresql://postgres:your-rotated-password@db.your-project-ref.supabase.co:5432/postgres
-```
+## Vercel Deployment
 
-Local-only upload variable:
+1. Push the code to GitHub.
+2. In Vercel, import or open the connected project.
+3. Set Framework Preset: `Vite`.
+4. Set Build Command: `npm run build`.
+5. Set Output Directory: `dist`.
+6. Add `VITE_SUPABASE_URL`.
+7. Add `VITE_SUPABASE_ANON_KEY`.
+8. Redeploy after adding environment variables.
 
-```txt
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-```
+## YouTube Workflow
 
-`SUPABASE_ANON_KEY` is public-safe for browser usage. `SUPABASE_DB_URL` and `SUPABASE_SERVICE_ROLE_KEY` are secret and must never be imported into frontend code.
+1. Upload each video to YouTube.
+2. Use public, unlisted, or embeddable videos.
+3. Copy the YouTube URL.
+4. Add a row in Supabase `videos`.
+5. Use categories like `films`, `ads`, `reels`, `music`, or `documentary`.
 
-## Supabase Setup
-
-1. Create a Supabase project.
-2. Go to Project Settings > API and copy:
-   - Project URL
-   - anon public key
-   - service_role key
-3. Create a local `.env` file from `.env.example`.
-4. Keep `SUPABASE_SERVICE_ROLE_KEY` local only. Never add it to Vercel.
-5. Rotate any database password that has been pasted into chat or committed anywhere.
-
-The upload script creates or updates a public bucket named `portfolio-videos`.
-
-### Storage Bucket
-
-The portfolio expects a public bucket:
-
-```txt
-portfolio-videos
-```
-
-The upload script creates it automatically when `SUPABASE_SERVICE_ROLE_KEY` is present locally. You can also create it in the Supabase dashboard from Storage > New bucket > `portfolio-videos` > Public bucket.
-
-## Upload Videos
-
-The script reads from:
-
-```txt
-C:/users/ayazk/aki/content
-```
-
-Run:
-
-```bash
-npm install
-npm run upload:videos
-```
-
-It uploads `.mp4` and `.webm` files, then writes `public/video-manifest.json`.
-
-For best delivery, create WebM versions next to each MP4 using the same base filename:
-
-```txt
-film-name.mp4
-film-name.webm
-```
-
-Recommended export targets:
-
-```txt
-MP4: H.264, 1080p or 1440p, fast start enabled
-WebM: VP9 or AV1 where practical
-Audio: AAC for MP4, Opus for WebM
-```
-
-## Vercel Environment Variables
-
-In Vercel, open Project > Settings > Environment Variables and add:
-
-```txt
-SUPABASE_URL
-SUPABASE_ANON_KEY
-```
-
-Optional server-only variable for `/api/data`:
-
-```txt
-SUPABASE_DB_URL
-```
-
-Do not add `SUPABASE_SERVICE_ROLE_KEY` to Vercel. Do not expose raw PostgreSQL URLs in browser code.
-
-Exact dashboard flow:
-
-1. Open Vercel Dashboard.
-2. Select the `aki` project.
-3. Go to Settings > Environment Variables.
-4. Add `SUPABASE_URL` for Production, Preview, and Development.
-5. Add `SUPABASE_ANON_KEY` for Production, Preview, and Development.
-6. Add `SUPABASE_DB_URL` only if you want `/api/data` enabled.
-7. Click Save.
-8. Go to Deployments, open the latest deployment menu, and choose Redeploy.
-
-## Deployment
-
-1. Push this folder to GitHub.
-2. Import the repository in Vercel.
-3. Use build command `npm run build`.
-4. Use output directory `dist`.
-5. Set the root directory to `portfolio-vercel-supabase` if this folder is inside a larger repo.
-4. Add the Vercel environment variables above.
-5. Deploy.
-6. If you add or change environment variables, redeploy the latest deployment.
+The frontend uses thumbnails first, then lazy-loads YouTube no-cookie embeds on hover or when a card enters the viewport.
 
 ## Performance Notes
 
-- Videos use `preload="metadata"`.
-- The first manifest item powers the muted hero background video.
-- Video playback starts only when the card is visible.
-- Videos pause when they leave the viewport.
-- Supabase public URLs are generated at runtime from the manifest.
-- `/api/config` exposes only the public Supabase URL and anon key to the browser.
-- `/api/data` shows the safe pattern for server-only database access.
-- The fixed `aspect-ratio` prevents layout shift.
-- Loading and failure states keep the page stable.
+- No local videos ship with the site.
+- YouTube iframes are lazy-loaded.
+- Thumbnails render first for fast initial paint.
+- Video cards use fixed `aspect-video` sizing to prevent layout shift.
+- Hero uses the newest Supabase video as the cinematic background.
+- Framer Motion animations are viewport-triggered.
 
-## Common Mistakes
+## Customization
 
-- Do not use `C:/users/ayazk/aki/content` in HTML or JavaScript.
-- Do not commit `.env`.
-- Do not expose `SUPABASE_SERVICE_ROLE_KEY` in frontend code or Vercel.
-- Do not expose the PostgreSQL connection string in frontend code.
-- Do not upload only huge master files; encode web-ready MP4 and WebM versions.
-- Do not set `preload="auto"` for a portfolio grid.
+Update contact links in:
+
+```txt
+src/components/Contact.jsx
+```
+
+Update copy, categories, and service cards in the component files under:
+
+```txt
+src/components/
+```
 
 ## Troubleshooting
 
-- Blank video grid: confirm `public/video-manifest.json` has uploaded video paths.
-- `/api/config` returns 500: add `SUPABASE_URL` and `SUPABASE_ANON_KEY` in Vercel, then redeploy.
-- `/api/data` returns 500: add `SUPABASE_DB_URL` in Vercel, then redeploy.
-- Videos 404: confirm the bucket is public and the manifest paths match Supabase Storage object paths.
-- Slow playback: re-encode large source files into web-ready MP4/WebM versions before uploading.
+- Empty showcase: add rows to the `videos` table.
+- Supabase error: verify `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, and RLS select policy.
+- YouTube not playing: confirm the video allows embedding.
+- Thumbnail looks low quality: add a custom `thumbnail` URL in Supabase.
+- Vercel still shows old content: redeploy after adding env vars.
