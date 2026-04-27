@@ -16,11 +16,15 @@ export default function About() {
           viewport={{ once: true, margin: "-100px" }}
           className="space-y-8"
         >
-          <h2 className="font-serif text-4xl leading-tight sm:text-6xl">
-            I build visual stories that make brands feel larger than the screen.
+          <h2 className="font-serif text-4xl leading-none sm:text-6xl">
+            Less noise.
+            <br />
+            More feeling.
           </h2>
-          <p className="max-w-3xl text-lg leading-8 text-zinc-400">
-            The work sits between film language and digital speed: cinematic mood, sharp editing, and visuals designed for clients who want attention without looking loud.
+          <p className="max-w-lg text-sm uppercase leading-7 tracking-[0.22em] text-zinc-500">
+            Visuals with rhythm.
+            <br />
+            Edits with pulse.
           </p>
         </motion.div>
       </div>

@@ -57,7 +57,7 @@ export default function VideoCard({ video }) {
 
         {failed && (
           <div className="absolute inset-0 grid place-items-center bg-black/80 p-6 text-center text-sm text-zinc-300">
-            Video unavailable. Check the YouTube link in Supabase.
+            Unavailable.
           </div>
         )}
 

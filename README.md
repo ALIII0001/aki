@@ -8,14 +8,21 @@ A premium React portfolio for filmmaker-style work: Vite, Framer Motion, Tailwin
 portfolio-vercel-supabase/
   public/
     assets/
+      hero-cinematic.svg
+      transition-one.svg
+      transition-two.svg
+      portfolio-highlight.svg
   src/
     components/
       About.jsx
       Contact.jsx
       Hero.jsx
+      Header.jsx
+      PortfolioHighlight.jsx
       Services.jsx
       VideoCard.jsx
       VideoRow.jsx
+      VisualBreak.jsx
     hooks/
       useVideos.js
     lib/
@@ -103,13 +110,30 @@ The anon key is public-safe when Row Level Security policies are correct. Never 
 
 The frontend uses thumbnails first, then lazy-loads YouTube no-cookie embeds on hover or when a card enters the viewport.
 
+## Image Placeholders
+
+Replace these files with your four supplied images:
+
+```txt
+public/assets/hero-cinematic.svg
+public/assets/transition-one.svg
+public/assets/transition-two.svg
+public/assets/portfolio-highlight.svg
+```
+
+If you use `.jpg` or `.png` names instead, update:
+
+```txt
+src/lib/visuals.js
+```
+
 ## Performance Notes
 
 - No local videos ship with the site.
 - YouTube iframes are lazy-loaded.
 - Thumbnails render first for fast initial paint.
 - Video cards use fixed `aspect-video` sizing to prevent layout shift.
-- Hero uses the newest Supabase video as the cinematic background.
+- Hero uses a visual background and can fall back to the newest video thumbnail.
 - Framer Motion animations are viewport-triggered.
 
 ## Customization
@@ -118,6 +142,12 @@ Update contact links in:
 
 ```txt
 src/components/Contact.jsx
+```
+
+WhatsApp is already wired to:
+
+```txt
+https://wa.me/918462091288?text=Hi%2C%20I%20want%20to%20start%20a%20project
 ```
 
 Update copy, categories, and service cards in the component files under:

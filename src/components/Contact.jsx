@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Instagram, MessageCircle } from "lucide-react";
 
-const whatsappNumber = "919999999999";
+const whatsappUrl = "https://wa.me/918462091288?text=Hi%2C%20I%20want%20to%20start%20a%20project";
 const instagramUrl = "https://www.instagram.com/";
 
 export default function Contact() {
@@ -16,12 +16,14 @@ export default function Contact() {
         >
           <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_70%_30%,rgba(199,160,92,.38),transparent_38%)]" />
           <div className="relative max-w-3xl">
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-zinc-600">Now booking</p>
-            <h2 className="mt-5 font-serif text-4xl leading-none sm:text-7xl">
-              Let's make the next frame impossible to ignore.
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-zinc-600">Book</p>
+            <h2 className="mt-5 font-serif text-4xl leading-none sm:text-6xl">
+              Start with
+              <br />
+              one message.
             </h2>
             <div className="mt-8 flex flex-wrap gap-4">
-              <a className="cinema-button cinema-button--dark" href={`https://wa.me/${whatsappNumber}`}>
+              <a className="cinema-button cinema-button--dark" href={whatsappUrl}>
                 <MessageCircle size={18} />
                 WhatsApp
               </a>
@@ -35,7 +37,7 @@ export default function Contact() {
       </div>
 
       <a
-        href={`https://wa.me/${whatsappNumber}`}
+        href={whatsappUrl}
         className="fixed bottom-5 right-5 z-40 grid h-14 w-14 place-items-center rounded-full bg-gold text-night shadow-2xl shadow-gold/25 transition hover:scale-105"
         aria-label="Contact on WhatsApp"
       >

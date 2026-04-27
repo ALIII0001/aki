@@ -76,6 +76,19 @@ a {
   border-color: rgba(9, 9, 9, 0.26);
 }
 
+.nav-link {
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgb(212 212 216);
+  transition: color 180ms ease;
+}
+
+.nav-link:hover {
+  color: #c7a05c;
+}
+
 .scrollbar-hide {
   scrollbar-width: none;
 }

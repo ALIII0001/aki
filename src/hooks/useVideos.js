@@ -11,7 +11,7 @@ export function useVideos() {
 
     async function fetchVideos() {
       if (!isSupabaseConfigured) {
-        setError("Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY.");
+        setError("Videos unavailable.");
         setLoading(false);
         return;
       }
@@ -24,7 +24,7 @@ export function useVideos() {
       if (ignore) return;
 
       if (queryError) {
-        setError(queryError.message);
+        setError("Videos unavailable.");
         setVideos([]);
       } else {
         setVideos(data ?? []);

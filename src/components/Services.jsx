@@ -4,22 +4,18 @@ import { Clapperboard, Film, Megaphone, Scissors } from "lucide-react";
 const services = [
   {
     title: "Directing & Cinematography",
-    text: "Frames shaped for atmosphere, story, and brand recall.",
     icon: Film
   },
   {
-    title: "Professional Video Editing",
-    text: "Rhythm, pacing, sound, and color built for premium retention.",
+    title: "Video Editing",
     icon: Scissors
   },
   {
-    title: "Social Media Growth",
-    text: "Short-form hooks and platform-native edits made to travel.",
+    title: "Social Growth",
     icon: Megaphone
   },
   {
-    title: "Long & Short Form Editing",
-    text: "From cinematic reels to complete campaign films and episodes.",
+    title: "Film & Content Editing",
     icon: Clapperboard
   }
 ];
@@ -29,10 +25,12 @@ export default function Services() {
     <section id="services" className="relative px-5 py-24 sm:px-8 sm:py-32">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,rgba(199,160,92,0.14),transparent_28%)]" />
       <div className="relative mx-auto max-w-7xl">
-        <p className="eyebrow">Production capabilities</p>
-        <div className="mt-4 grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+        <p className="eyebrow">Services</p>
+        <div className="mt-5 grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
           <h2 className="font-serif text-4xl leading-none sm:text-6xl">
-            Everything a visual brand needs before the first frame cuts.
+            Built for
+            <br />
+            attention.
           </h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {services.map((service, index) => {
@@ -44,14 +42,13 @@ export default function Services() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ delay: index * 0.06 }}
-                  whileHover={{ y: -8 }}
-                  className="rounded-lg border border-white/10 bg-white/[0.045] p-6 shadow-2xl shadow-black/20 backdrop-blur-xl transition hover:border-gold/50 hover:bg-white/[0.07]"
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  className="group rounded-lg border border-white/10 bg-white/[0.045] p-6 shadow-2xl shadow-black/20 backdrop-blur-xl transition hover:border-gold/50 hover:bg-white/[0.075] hover:shadow-glow"
                 >
-                  <div className="grid h-12 w-12 place-items-center rounded-full bg-gold/12 text-gold">
+                  <div className="grid h-12 w-12 place-items-center rounded-full bg-gold/12 text-gold transition group-hover:scale-110">
                     <Icon size={22} />
                   </div>
-                  <h3 className="mt-8 font-serif text-2xl leading-none">{service.title}</h3>
-                  <p className="mt-4 leading-7 text-zinc-400">{service.text}</p>
+                  <h3 className="mt-10 max-w-[12rem] font-serif text-2xl leading-none">{service.title}</h3>
                 </motion.article>
               );
             })}

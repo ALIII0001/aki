@@ -1,10 +1,14 @@
 import { motion, useScroll, useSpring } from "framer-motion";
 import About from "./components/About.jsx";
 import Contact from "./components/Contact.jsx";
+import Header from "./components/Header.jsx";
 import Hero from "./components/Hero.jsx";
+import PortfolioHighlight from "./components/PortfolioHighlight.jsx";
 import Services from "./components/Services.jsx";
 import VideoRow from "./components/VideoRow.jsx";
+import VisualBreak from "./components/VisualBreak.jsx";
 import { useVideos } from "./hooks/useVideos.js";
+import { visuals } from "./lib/visuals.js";
 
 const preferredOrder = ["films", "ads", "reels", "music", "documentary"];
 
@@ -14,7 +18,6 @@ export default function App() {
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
   const groupedVideos = groupVideos(videos);
   const categories = Object.keys(groupedVideos).sort(sortCategories);
-  const heroVideo = videos[0];
 
   return (
     <div className="min-h-screen overflow-hidden bg-night text-ivory">
@@ -23,10 +26,13 @@ export default function App() {
         style={{ scaleX }}
       />
 
-      <Hero video={heroVideo} loading={loading} />
+      <Header />
+      <Hero />
 
       <main>
-        <section id="work" className="relative z-10 space-y-16 py-20 sm:py-28">
+        <PortfolioHighlight />
+
+        <section id="work" className="relative z-10 space-y-14 py-16 sm:py-24">
           <div className="mx-auto max-w-7xl px-5 sm:px-8">
             <motion.p
               initial={{ opacity: 0, y: 16 }}
@@ -34,23 +40,25 @@ export default function App() {
               viewport={{ once: true, margin: "-80px" }}
               className="eyebrow"
             >
-              Selected motion work
+              Watch
             </motion.p>
             <motion.h2
               initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ delay: 0.08 }}
-              className="mt-4 max-w-4xl font-serif text-4xl leading-none text-ivory sm:text-6xl lg:text-7xl"
+              className="mt-4 max-w-2xl font-serif text-4xl leading-none text-ivory sm:text-6xl"
             >
-              Built like a streaming premiere, curated like a director's reel.
+              Select frames.
+              <br />
+              Pure impact.
             </motion.h2>
           </div>
 
           {error && (
             <div className="mx-auto max-w-7xl px-5 sm:px-8">
-              <div className="rounded-lg border border-red-400/20 bg-red-950/20 p-5 text-sm text-red-100">
-                {error}
+              <div className="rounded-lg border border-white/10 bg-white/[0.04] p-6 text-sm uppercase tracking-[0.2em] text-zinc-400">
+                Reel loading soon.
               </div>
             </div>
           )}
@@ -59,8 +67,8 @@ export default function App() {
 
           {!loading && !categories.length && !error && (
             <div className="mx-auto max-w-7xl px-5 sm:px-8">
-              <div className="rounded-lg border border-white/10 bg-white/[0.04] p-8 text-zinc-300">
-                Add videos in Supabase to start the showcase.
+              <div className="rounded-lg border border-white/10 bg-white/[0.04] p-8 text-sm uppercase tracking-[0.2em] text-zinc-400">
+                Reel loading soon.
               </div>
             </div>
           )}
@@ -71,7 +79,9 @@ export default function App() {
             ))}
         </section>
 
+        <VisualBreak image={visuals.transitionOne} label="Frame. Feeling." />
         <Services />
+        <VisualBreak image={visuals.transitionTwo} label="No noise." align="right" />
         <About />
         <Contact />
       </main>
