@@ -10,8 +10,8 @@ export default {
         gold: "#c7a05c"
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        serif: ["Playfair Display", "Georgia", "serif"]
+        sans: ["Manrope", "system-ui", "sans-serif"],
+        serif: ["Cormorant Garamond", "Georgia", "serif"]
       },
       boxShadow: {
         glow: "0 0 70px rgba(199, 160, 92, 0.22)"

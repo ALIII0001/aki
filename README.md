@@ -1,4 +1,4 @@
-# AKI Films Cinematic Portfolio
+# Ali Khan Films Cinematic Portfolio
 
 A premium React portfolio for filmmaker-style work: Vite, Framer Motion, Tailwind CSS, Supabase video metadata, and YouTube-hosted playback.
 

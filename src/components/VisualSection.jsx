@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
-export default function VisualSection({ image, label, align = "left" }) {
+export default function VisualSection({ image, label, description, align = "left" }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
@@ -21,11 +21,16 @@ export default function VisualSection({ image, label, align = "left" }) {
         initial={{ opacity: 0, y: 22 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-120px" }}
-        className={`absolute bottom-10 px-5 font-serif text-4xl leading-none text-ivory sm:px-8 sm:text-7xl ${
+        className={`absolute bottom-10 max-w-3xl px-5 sm:px-8 ${
           align === "right" ? "right-0 text-right" : "left-0"
         }`}
       >
-        {label}
+        <span className="block font-serif text-4xl leading-none text-ivory sm:text-7xl">{label}</span>
+        {description ? (
+          <span className="mt-4 block text-sm uppercase tracking-[0.22em] text-zinc-300 sm:text-base">
+            {description}
+          </span>
+        ) : null}
       </motion.p>
     </section>
   );

@@ -3,20 +3,24 @@ import { Clapperboard, Film, Megaphone, Scissors } from "lucide-react";
 
 const services = [
   {
-    title: "Directing & Cinematography",
-    icon: Film
+    title: "Direction & Cinematography",
+    icon: Film,
+    description: "Visuals designed to cut better"
   },
   {
     title: "Video Editing",
-    icon: Scissors
+    icon: Scissors,
+    description: "Where raw footage becomes emotion"
   },
   {
-    title: "Social Growth",
-    icon: Megaphone
+    title: "Campaign & Social Cuts",
+    icon: Megaphone,
+    description: "Built for retention and replay"
   },
   {
-    title: "Film & Content Editing",
-    icon: Clapperboard
+    title: "Content Packages",
+    icon: Clapperboard,
+    description: "One story. Multiple formats."
   }
 ];
 
@@ -24,15 +28,20 @@ export default function Services() {
   return (
     <section id="services" className="relative px-5 py-24 sm:px-8 sm:py-32">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,rgba(199,160,92,0.14),transparent_28%)]" />
-      <div className="relative mx-auto max-w-7xl">
-        <p className="eyebrow">Services</p>
-        <div className="mt-5 grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
-          <h2 className="font-serif text-4xl leading-none sm:text-6xl">
-            Built for
-            <br />
-            attention.
-          </h2>
-          <div className="grid gap-4 sm:grid-cols-2">
+      <div className="section-shell relative">
+        <p className="eyebrow">Services detail</p>
+        <div className="mt-5 grid gap-10 lg:grid-cols-[0.75fr_1.25fr]">
+          <div>
+            <h2 className="font-serif text-4xl leading-none sm:text-6xl">
+              Precision in
+              <br />
+              every cut.
+            </h2>
+            <p className="mt-6 max-w-md text-base leading-8 text-zinc-300">
+              Premium by feel. Focused by design. Every format built to land harder.
+            </p>
+          </div>
+          <div className="space-y-4">
             {services.map((service, index) => {
               const Icon = service.icon;
               return (
@@ -42,13 +51,17 @@ export default function Services() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ delay: index * 0.06 }}
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  className="group rounded-lg border border-white/10 bg-white/[0.045] p-6 shadow-2xl shadow-black/20 backdrop-blur-xl transition hover:border-gold/50 hover:bg-white/[0.075] hover:shadow-glow"
+                  className="grid gap-5 border-t border-white/10 py-5 sm:grid-cols-[72px_1fr]"
                 >
-                  <div className="grid h-12 w-12 place-items-center rounded-full bg-gold/12 text-gold transition group-hover:scale-110">
-                    <Icon size={22} />
+                  <div className="grid h-14 w-14 place-items-center rounded-full border border-gold/20 bg-gold/10 text-gold">
+                    <Icon size={24} />
                   </div>
-                  <h3 className="mt-10 max-w-[12rem] font-serif text-2xl leading-none">{service.title}</h3>
+                  <div className="max-w-2xl">
+                    <h3 className="font-serif text-3xl leading-none sm:text-4xl">{service.title}</h3>
+                    <p className="mt-4 text-sm leading-7 text-zinc-400 sm:text-base">
+                      {service.description}
+                    </p>
+                  </div>
                 </motion.article>
               );
             })}

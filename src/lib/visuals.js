@@ -1,6 +1,5 @@
 export const visuals = {
-  hero: "/assets/hero-cinematic.svg",
-  transitionOne: "/assets/transition-one.svg",
-  transitionTwo: "/assets/transition-two.svg",
-  highlight: "/assets/portfolio-highlight.svg"
+  heroFilmShoot: "/assets/hero-film-shoot.png",
+  editingSetup: "/assets/editing-setup.png",
+  watchProduct: "/assets/watch-product.png"
 };
