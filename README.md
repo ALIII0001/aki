@@ -22,9 +22,10 @@ Create a local `.env` file:
 ```txt
 VITE_SUPABASE_URL=https://your-project-ref.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-public-key
+SUPABASE_PUBLIC_ANON_KEY=your-anon-public-key
 ```
 
-Only the anon key is used in the frontend. Never place the Supabase service role key in this app.
+`SUPABASE_PUBLIC_ANON_KEY` is read by the Vercel runtime config route and takes priority over stale `VITE_SUPABASE_ANON_KEY` values. Only the anon key is used in the frontend. Never place the Supabase service role key in this app.
 
 ## Local development
 
@@ -152,6 +153,7 @@ If Supabase is missing or returns no data, the site falls back to built-in defau
 4. Add:
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_ANON_KEY`
+   - `SUPABASE_PUBLIC_ANON_KEY`
 5. Deploy.
 
 ## Free-tier friendly choices
