@@ -9,16 +9,16 @@ export default function ProtectedRoute() {
     return <Outlet />;
   }
 
+  if (loading) {
+    return <div className="flex min-h-screen items-center justify-center bg-night text-zinc-300">Loading admin...</div>;
+  }
+
   if (!isSupabaseConfigured) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-night px-6 text-center text-zinc-300">
-        Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` to use the admin dashboard.
+        Admin connection is not ready. Redeploy after saving the Vercel Supabase variables.
       </div>
     );
-  }
-
-  if (loading) {
-    return <div className="flex min-h-screen items-center justify-center bg-night text-zinc-300">Loading admin...</div>;
   }
 
   if (authError) {

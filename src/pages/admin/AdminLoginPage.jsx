@@ -7,7 +7,7 @@ import { useToast } from "../../contexts/ToastContext.jsx";
 export default function AdminLoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, isAuthenticated, isAdmin, isSupabaseConfigured, isDevBypass } = useAuth();
+  const { login, isAuthenticated, isAdmin, isSupabaseConfigured, isDevBypass, loading } = useAuth();
   const { addToast } = useToast();
   const [form, setForm] = useState({ email: "", password: "" });
   const [submitting, setSubmitting] = useState(false);
@@ -47,9 +47,15 @@ export default function AdminLoginPage() {
           </p>
         ) : null}
 
-        {!isSupabaseConfigured ? (
+        {loading ? (
+          <p className="mt-6 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-zinc-300">
+            Connecting admin...
+          </p>
+        ) : null}
+
+        {!loading && !isSupabaseConfigured ? (
           <p className="mt-6 rounded-2xl border border-yellow-500/20 bg-yellow-500/10 px-4 py-3 text-sm text-yellow-100">
-            Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` before using admin login.
+            Admin connection is not ready. Redeploy after saving the Vercel Supabase variables.
           </p>
         ) : null}
 
@@ -70,7 +76,7 @@ export default function AdminLoginPage() {
           />
           <button
             type="submit"
-            disabled={submitting || !isSupabaseConfigured}
+            disabled={submitting || loading || !isSupabaseConfigured}
             className="cinema-button w-full disabled:cursor-not-allowed disabled:opacity-60"
           >
             {submitting ? "Signing in..." : "Login"}
