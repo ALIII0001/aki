@@ -55,7 +55,7 @@ export default function AdminLoginPage() {
 
         {!loading && !isSupabaseConfigured ? (
           <p className="mt-6 rounded-2xl border border-yellow-500/20 bg-yellow-500/10 px-4 py-3 text-sm text-yellow-100">
-            Admin connection is not ready. Redeploy after saving the Vercel Supabase variables.
+            Admin connection is warming up. Refresh after the latest deployment finishes.
           </p>
         ) : null}
 

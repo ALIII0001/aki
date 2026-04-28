@@ -16,7 +16,7 @@ export default function ProtectedRoute() {
   if (!isSupabaseConfigured) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-night px-6 text-center text-zinc-300">
-        Admin connection is not ready. Redeploy after saving the Vercel Supabase variables.
+        Admin connection is warming up. Refresh after the latest deployment finishes.
       </div>
     );
   }
