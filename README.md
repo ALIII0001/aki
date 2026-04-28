@@ -1,180 +1,163 @@
-# Ali Khan Films Cinematic Portfolio
+# Ali Khan Films
 
-A premium React portfolio for filmmaker-style work: Vite, Framer Motion, Tailwind CSS, Supabase video metadata, and YouTube-hosted playback.
+A cinematic React/Vite portfolio for Ali Khan Films with:
 
-## Folder Structure
+- public portfolio pages powered by Supabase
+- secure admin dashboard with Supabase Auth
+- media uploads through Supabase Storage
+- theme, copy, and contact settings editable without code changes
 
-```txt
-portfolio-vercel-supabase/
-  public/
-    assets/
-      hero-cinematic.svg
-      transition-one.svg
-      transition-two.svg
-      portfolio-highlight.svg
-  src/
-    components/
-      About.jsx
-      Contact.jsx
-      Hero.jsx
-      Header.jsx
-      PortfolioHighlight.jsx
-      Services.jsx
-      VideoCard.jsx
-      VideoSection.jsx
-      VisualSection.jsx
-    hooks/
-      useVideos.js
-    lib/
-      supabaseClient.js
-      youtube.js
-    App.jsx
-    main.jsx
-    styles.css
-  .env.example
-  index.html
-  package.json
-  postcss.config.js
-  tailwind.config.js
-  vercel.json
-  vite.config.js
-```
+## Stack
 
-## Supabase Table
+- React + Vite
+- Supabase Auth, Database, Storage
+- Tailwind CSS
+- Framer Motion
+- Vercel-friendly frontend only setup
 
-Create a table named `videos`:
+## Environment variables
 
-```sql
-create table public.videos (
-  id uuid primary key default gen_random_uuid(),
-  title text not null,
-  youtube_url text not null,
-  thumbnail text,
-  created_at timestamptz not null default now()
-);
-```
-
-Enable read access for published portfolio videos:
-
-```sql
-alter table public.videos enable row level security;
-
-create policy "Public can read videos"
-on public.videos
-for select
-to anon
-using (true);
-```
-
-Add rows like:
-
-```txt
-title: Brand Film 01
-youtube_url: https://www.youtube.com/watch?v=YOUR_VIDEO_ID
-thumbnail: https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg
-```
-
-Seed the provided YouTube videos:
-
-```sql
-insert into public.videos (title, youtube_url, thumbnail)
-values
-  (
-    'Cut One',
-    'https://youtu.be/b29Kepe4tms',
-    'https://img.youtube.com/vi/b29Kepe4tms/maxresdefault.jpg'
-  ),
-  (
-    'Cut Two',
-    'https://youtu.be/XqCPoUJ8754',
-    'https://img.youtube.com/vi/XqCPoUJ8754/maxresdefault.jpg'
-  );
-```
-
-`thumbnail` is optional. If empty, the site derives a YouTube thumbnail from `youtube_url`.
-
-## Environment Variables
-
-Local `.env` and Vercel variables:
+Create a local `.env` file:
 
 ```txt
 VITE_SUPABASE_URL=https://your-project-ref.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-public-key
 ```
 
-The anon key is public-safe when Row Level Security policies are correct. Never put a service role key or PostgreSQL connection string in this React app.
+Only the anon key is used in the frontend. Never place the Supabase service role key in this app.
 
-## Vercel Deployment
+## Local development
 
-1. Push the code to GitHub.
-2. In Vercel, import or open the connected project.
-3. Set Framework Preset: `Vite`.
-4. Set Build Command: `npm run build`.
-5. Set Output Directory: `dist`.
-6. Add `VITE_SUPABASE_URL`.
-7. Add `VITE_SUPABASE_ANON_KEY`.
-8. Redeploy after adding environment variables.
-
-## YouTube Workflow
-
-1. Upload each video to YouTube.
-2. Use public, unlisted, or embeddable videos.
-3. Copy the YouTube URL.
-4. Add a row in Supabase `videos`.
-5. The site fetches the rows automatically.
-
-The frontend uses thumbnails first, then lazy-loads YouTube no-cookie embeds on hover or when a card enters the viewport.
-
-## Image Placeholders
-
-Replace these files with your four supplied images:
-
-```txt
-public/assets/hero-cinematic.svg
-public/assets/transition-one.svg
-public/assets/transition-two.svg
-public/assets/portfolio-highlight.svg
+```bash
+npm install
+npm run dev
 ```
 
-If you use `.jpg` or `.png` names instead, update:
+Build check:
 
-```txt
-src/lib/visuals.js
+```bash
+npm run build
 ```
 
-## Performance Notes
+## Supabase setup
 
-- No local videos ship with the site.
-- YouTube iframes are lazy-loaded.
-- Thumbnails render first for fast initial paint.
-- Video cards use fixed `aspect-video` sizing to prevent layout shift.
-- Hero uses a visual background and can fall back to the newest video thumbnail.
-- Framer Motion animations are viewport-triggered.
+Run the SQL in [supabase/schema.sql](/d:/aki/supabase/schema.sql:1) inside the Supabase SQL editor.
 
-## Customization
+That schema creates:
 
-Update contact links in:
+- `profiles`
+- `projects`
+- `media_assets`
+- `site_content`
+- `theme_settings`
+- `site_settings`
+- public `media` storage bucket
+- RLS policies for public read + admin-only writes
 
-```txt
-src/components/Contact.jsx
+## Create the first admin
+
+1. Open the app and go to `/admin/login`.
+2. Create a user in Supabase Auth manually, or sign up through another internal flow if you add one later.
+3. After the user exists, mark that user as admin in Supabase SQL:
+
+```sql
+update public.profiles
+set is_admin = true
+where email = 'your-admin@email.com';
 ```
 
-WhatsApp is already wired to:
+4. Log in at `/admin/login`.
 
-```txt
-https://wa.me/918462091288?text=Hi%20I%20want%20to%20start%20a%20project
-```
+## Admin routes
 
-Update copy, categories, and service cards in the component files under:
+- `/admin/login`
+- `/admin/dashboard`
+- `/admin/projects`
+- `/admin/media`
+- `/admin/content`
+- `/admin/theme`
+- `/admin/settings`
 
-```txt
-src/components/
-```
+## What the admin panel manages
 
-## Troubleshooting
+### Projects / Work
 
-- Empty showcase: add rows to the `videos` table.
-- Supabase error: verify `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, and RLS select policy.
-- YouTube not playing: confirm the video allows embedding.
-- Thumbnail looks low quality: add a custom `thumbnail` URL in Supabase.
-- Vercel still shows old content: redeploy after adding env vars.
+- add, edit, delete projects
+- reorder projects
+- title, category, description
+- external video links
+- thumbnail image URL
+- featured toggle
+- publish/unpublish toggle
+
+### Media library
+
+- upload images to Supabase Storage
+- preview media
+- delete media
+- copy public image URLs
+
+### Website text
+
+- hero title and subtitle
+- CTA labels
+- intro, impact, process, work, services, statement, studio note
+- final CTA and footer
+
+### Theme
+
+- primary color
+- accent color
+- background style
+- font style
+- button style
+- hero image URL
+- craft section image URL
+- impact banner image URL
+- grain on/off
+- animations on/off
+
+### Settings
+
+- WhatsApp number
+- Instagram URL
+- YouTube URL
+- email
+- location
+- booking link
+- booking button text
+
+## Public website behavior
+
+The public portfolio reads from Supabase when configured:
+
+- published projects from `projects`
+- editable copy from `site_content`
+- theme controls from `theme_settings`
+- contact/social links from `site_settings`
+
+If Supabase is missing or returns no data, the site falls back to built-in defaults so the portfolio still renders cleanly.
+
+## Storage notes
+
+- Upload images to Supabase Storage using the admin panel.
+- Store heavy videos on YouTube, Vimeo, or Instagram and save only the link.
+- Paste uploaded image URLs into projects or theme settings.
+
+## Vercel deployment
+
+1. Push the repo to GitHub.
+2. Import into Vercel.
+3. Set framework preset to `Vite`.
+4. Add:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+5. Deploy.
+
+## Free-tier friendly choices
+
+- frontend-only auth via Supabase Auth
+- no paid APIs
+- video hosting delegated to external platforms
+- images stored in a single public bucket
+- content/theme/settings stored as singleton rows

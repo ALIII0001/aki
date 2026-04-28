@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { Play } from "lucide-react";
+import { ExternalLink, Play } from "lucide-react";
 import { useRef, useState } from "react";
 import { getEmbedUrl, getThumbnail } from "../lib/youtube.js";
 
@@ -10,7 +10,9 @@ export default function VideoCard({ video }) {
   const [failed, setFailed] = useState(false);
   const thumbnail = getThumbnail(video);
   const shouldLoad = active || inView;
-  const embedUrl = shouldLoad ? getEmbedUrl(video.youtube_url, { autoplay: true, controls: false }) : "";
+  const sourceUrl = video.video_url || video.youtube_url;
+  const embedUrl = shouldLoad ? getEmbedUrl(sourceUrl, { autoplay: true, controls: false }) : "";
+  const hasEmbed = Boolean(embedUrl);
 
   return (
     <motion.article
@@ -31,38 +33,42 @@ export default function VideoCard({ video }) {
             alt=""
             loading="lazy"
             className={`absolute inset-0 h-full w-full object-cover transition duration-700 ${
-              shouldLoad ? "scale-105 opacity-0" : "opacity-100"
+              shouldLoad && hasEmbed ? "scale-105 opacity-0" : "opacity-100"
             }`}
           />
         )}
 
-        {!shouldLoad && (
+        {!shouldLoad || !hasEmbed ? (
           <div className="absolute inset-0 grid place-items-center bg-black/20">
             <div className="grid h-16 w-16 place-items-center rounded-full border border-white/20 bg-black/55 text-white backdrop-blur-md transition group-hover:scale-110 group-hover:border-gold group-hover:text-gold">
-              <Play size={22} fill="currentColor" />
+              {hasEmbed ? <Play size={22} fill="currentColor" /> : <ExternalLink size={20} />}
             </div>
           </div>
-        )}
+        ) : null}
 
-        {embedUrl && !failed && (
+        {embedUrl && !failed ? (
           <iframe
             className="absolute inset-0 h-full w-full"
             src={embedUrl}
             title={video.title}
-            allow="autoplay; encrypted-media; picture-in-picture"
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
             loading="lazy"
             onError={() => setFailed(true)}
           />
-        )}
+        ) : null}
 
-        {failed && (
+        {failed ? (
           <div className="absolute inset-0 grid place-items-center bg-black/80 p-6 text-center text-sm text-zinc-300">
             Unavailable.
           </div>
-        )}
+        ) : null}
+
+        {!hasEmbed && sourceUrl ? (
+          <a href={sourceUrl} target="_blank" rel="noreferrer" className="absolute inset-0 z-10" aria-label={`Open ${video.title}`} />
+        ) : null}
 
         <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-5 sm:p-7">
-          <p className="text-xs uppercase tracking-[0.24em] text-gold">Now playing</p>
+          <p className="text-xs uppercase tracking-[0.24em] text-gold">{video.category || "Now playing"}</p>
           <h4 className="mt-2 max-w-[90%] font-serif text-2xl leading-none sm:text-4xl">{video.title}</h4>
         </div>
       </div>

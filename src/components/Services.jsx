@@ -1,30 +1,16 @@
 import { motion } from "framer-motion";
 import { Clapperboard, Film, Megaphone, Scissors } from "lucide-react";
-
-const services = [
-  {
-    title: "Direction & Cinematography",
-    icon: Film,
-    description: "Visuals designed to cut better"
-  },
-  {
-    title: "Video Editing",
-    icon: Scissors,
-    description: "Where raw footage becomes emotion"
-  },
-  {
-    title: "Campaign & Social Cuts",
-    icon: Megaphone,
-    description: "Built for retention and replay"
-  },
-  {
-    title: "Content Packages",
-    icon: Clapperboard,
-    description: "One story. Multiple formats."
-  }
-];
+import { useSiteData } from "../contexts/SiteDataContext.jsx";
 
 export default function Services() {
+  const { content } = useSiteData();
+  const services = [
+    { title: content.service_1_title, icon: Film, description: content.service_1_text },
+    { title: content.service_2_title, icon: Scissors, description: content.service_2_text },
+    { title: content.service_3_title, icon: Megaphone, description: content.service_3_text },
+    { title: content.service_4_title, icon: Clapperboard, description: content.service_4_text }
+  ];
+
   return (
     <section id="services" className="relative px-5 py-24 sm:px-8 sm:py-32">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,rgba(199,160,92,0.14),transparent_28%)]" />
@@ -32,14 +18,8 @@ export default function Services() {
         <p className="eyebrow">Services detail</p>
         <div className="mt-5 grid gap-10 lg:grid-cols-[0.75fr_1.25fr]">
           <div>
-            <h2 className="font-serif text-4xl leading-none sm:text-6xl">
-              Precision in
-              <br />
-              every cut.
-            </h2>
-            <p className="mt-6 max-w-md text-base leading-8 text-zinc-300">
-              Premium by feel. Focused by design. Every format built to land harder.
-            </p>
+            <h2 className="font-serif text-4xl leading-none sm:text-6xl">{content.services_detail_heading}</h2>
+            <p className="mt-6 max-w-md text-base leading-8 text-zinc-300">{content.services_detail_intro}</p>
           </div>
           <div className="space-y-4">
             {services.map((service, index) => {
@@ -58,9 +38,7 @@ export default function Services() {
                   </div>
                   <div className="max-w-2xl">
                     <h3 className="font-serif text-3xl leading-none sm:text-4xl">{service.title}</h3>
-                    <p className="mt-4 text-sm leading-7 text-zinc-400 sm:text-base">
-                      {service.description}
-                    </p>
+                    <p className="mt-4 text-sm leading-7 text-zinc-400 sm:text-base">{service.description}</p>
                   </div>
                 </motion.article>
               );

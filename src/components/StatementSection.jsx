@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
+import { useSiteData } from "../contexts/SiteDataContext.jsx";
 
 export default function StatementSection() {
+  const { content } = useSiteData();
+
   return (
     <section className="px-5 py-24 sm:px-8 sm:py-32">
       <motion.div
@@ -10,7 +13,7 @@ export default function StatementSection() {
         className="section-shell border-y border-white/10 py-16 text-center"
       >
         <p className="mx-auto max-w-5xl font-serif text-4xl leading-none sm:text-6xl lg:text-7xl">
-          If it doesn&apos;t hold attention, it doesn&apos;t work.
+          {content.statement_text}
         </p>
       </motion.div>
     </section>

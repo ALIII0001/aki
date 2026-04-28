@@ -14,27 +14,53 @@ export function getYouTubeId(url = "") {
   return url.length === 11 ? url : "";
 }
 
+export function getVimeoId(url = "") {
+  const match = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  return match?.[1] || "";
+}
+
 export function getThumbnail(video) {
+  if (video?.thumbnail_url) return video.thumbnail_url;
   if (video?.thumbnail) return video.thumbnail;
 
-  const id = getYouTubeId(video?.youtube_url);
-  return id ? `https://img.youtube.com/vi/${id}/maxresdefault.jpg` : "";
+  const sourceUrl = video?.video_url || video?.youtube_url || "";
+  const youtubeId = getYouTubeId(sourceUrl);
+  if (youtubeId) return `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
+
+  return "";
 }
 
 export function getEmbedUrl(url, { autoplay = false, controls = false } = {}) {
-  const id = getYouTubeId(url);
-  if (!id) return "";
+  const youtubeId = getYouTubeId(url);
+  if (youtubeId) {
+    const params = new URLSearchParams({
+      autoplay: autoplay ? "1" : "0",
+      mute: "1",
+      loop: "1",
+      playsinline: "1",
+      rel: "0",
+      modestbranding: "1",
+      controls: controls ? "1" : "0",
+      playlist: youtubeId
+    });
 
-  const params = new URLSearchParams({
-    autoplay: autoplay ? "1" : "0",
-    mute: "1",
-    loop: "1",
-    playsinline: "1",
-    rel: "0",
-    modestbranding: "1",
-    controls: controls ? "1" : "0",
-    playlist: id
-  });
+    return `https://www.youtube-nocookie.com/embed/${youtubeId}?${params.toString()}`;
+  }
 
-  return `https://www.youtube-nocookie.com/embed/${id}?${params.toString()}`;
+  const vimeoId = getVimeoId(url);
+  if (vimeoId) {
+    const params = new URLSearchParams({
+      autoplay: autoplay ? "1" : "0",
+      muted: "1",
+      loop: "1",
+      title: "0",
+      byline: "0",
+      portrait: "0"
+    });
+
+    return `https://player.vimeo.com/video/${vimeoId}?${params.toString()}`;
+  }
+
+  return "";
 }
+

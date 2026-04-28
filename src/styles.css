@@ -4,6 +4,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --theme-primary: #f4efe7;
+  --theme-accent: #c7a05c;
+}
+
 html {
   scroll-behavior: smooth;
   background:
@@ -17,8 +22,27 @@ body {
     radial-gradient(circle at 10% 10%, rgba(199, 160, 92, 0.08), transparent 28%),
     radial-gradient(circle at 90% 20%, rgba(244, 239, 231, 0.05), transparent 18%),
     linear-gradient(180deg, #090909, #0a0a0a 20%, #070707 100%);
-  color: #f4efe7;
+  color: var(--theme-primary);
   font-family: "Manrope", system-ui, sans-serif;
+}
+
+html[data-bg-style="spotlight"] body {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(199, 160, 92, 0.18), transparent 40%),
+    linear-gradient(180deg, #050505, #0a0a0a 35%, #070707 100%);
+}
+
+html[data-bg-style="minimal"] body {
+  background: #080808;
+}
+
+html[data-font-style="classic"] body,
+html[data-font-style="classic"] .font-serif {
+  font-family: Georgia, "Times New Roman", serif !important;
+}
+
+html[data-font-style="modern"] .font-serif {
+  font-family: "Manrope", system-ui, sans-serif !important;
 }
 
 button,
@@ -37,12 +61,16 @@ a {
   mix-blend-mode: overlay;
 }
 
+html[data-grain="off"] .film-grain {
+  display: none;
+}
+
 .eyebrow {
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: #c7a05c;
+  color: var(--theme-accent);
 }
 
 .section-shell {
@@ -59,8 +87,8 @@ a {
   justify-content: center;
   gap: 0.65rem;
   border-radius: 999px;
-  border: 1px solid rgba(199, 160, 92, 0.58);
-  background: #c7a05c;
+  border: 1px solid color-mix(in srgb, var(--theme-accent) 58%, transparent);
+  background: var(--theme-accent);
   padding: 0 1.35rem;
   color: #090909;
   font-size: 0.84rem;
@@ -72,6 +100,14 @@ a {
 
 .cinema-button:hover {
   transform: translateY(-2px);
+}
+
+html[data-button-style="rounded"] .cinema-button {
+  border-radius: 1rem;
+}
+
+html[data-button-style="sharp"] .cinema-button {
+  border-radius: 0.25rem;
 }
 
 .cinema-button--ghost {
@@ -103,7 +139,7 @@ a {
 }
 
 .nav-link:hover {
-  color: #c7a05c;
+  color: var(--theme-accent);
 }
 
 .divider-grid {
@@ -121,3 +157,16 @@ a {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+.text-gold {
+  color: var(--theme-accent) !important;
+}
+
+.bg-gold {
+  background-color: var(--theme-accent) !important;
+}
+
+.border-gold {
+  border-color: var(--theme-accent) !important;
+}
+
